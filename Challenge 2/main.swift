@@ -7,7 +7,7 @@
 import Foundation
 
 //Mostrar as matérias, tópicos e importancia de cada uma
-
+// Class User
 class User{
     let name: String?
     var subject: Array<Subject>
