@@ -3,18 +3,21 @@
 //
 //  Created by Nicolas Barbosa on 15/03/22.
 //
-
 import Foundation
 
 
-//Class "user" stores the list of subjects added by the user
+//Class "User" stores the list of subjects added by the user
 class User{
     let name: String?
     var subject: Array<Subject>?
-
-    init(name: String, subject: Array<Subject>){
+    var busy: Array<Hours>?
+    var rest: Array<Hours>?
+    
+    init(name: String, subject: Array<Subject>, busy: Array<Hours>?, rest: Array<Hours>?){
         self.name = name
         self.subject = subject
+        self.busy = busy
+        self.rest = rest
     }
 }
 
@@ -32,26 +35,41 @@ class Subject{
 }
 
 
+// Class "Hours" stores available and unavailable time of the user
 class Hours{
-    var available: Array<Double>
-    var unavailable: Array<Double>
+    var available: Array<Double>?
+    var unavailable: Array<Double>?
     
-    init(available: Array<Double>, unavailable: Array<Double>){
+    init(available: Array<Double>?, unavailable: Array<Double>?){
         self.available = available
         self.unavailable = unavailable
     }
 }
 
 
-struct Application{
-    
-        //Prints the subjects, topics and importance
+//Prints the subjects, topics and importance
     func printRoutine(_ user: inout User) {
+        print("\n\n------------------------------------")
+        print("Horários:")
+        
+        for hours in user.busy! {
+            print("\nOcupado: \(hours.unavailable ?? [00])")
+        }
+    
+        for free in user.rest! {
+            print("Disponivel: \(free.available ?? [00])\n")
+        }
+        
+        print("------------------------------------")
+        
+        print("Matérias:")
+        
         for object in user.subject! {
             print("\n\(object.name ?? "Sem informação") : \(object.topic ?? "Sem informação") : \(object.importance )")
         }
+        
+        print("------------------------------------")
     }
-}
 
 
 
@@ -71,63 +89,23 @@ func deleteSub(_ array: Array<Subject>,_ subject: String?) -> Array<Subject>? {
 }
 
 
-//User wants to change their routine
-func alterRout(){
-    
-        print("\n1. Adicionar horários ocupados\n2. Adicionar horários livres\n3. Voltar a tela anterior")
-    
-    let newRoutine = readLine()
-    
-    switch newRoutine{
-        case "1":
-            
-            print("Adicionou ocupado")
-        
-            break
-        
-        case "2":
-        
-            print("Adicionou livre")
-        
-            break
-        
-        case "3":
-            
-            app.printRoutine(&nic)
-        
-            break
-    // Null answer
-        case .none:
-        
-            print("Sem respota\n")
-                
-        default:
-            
-            print("Não entendi, por favor tente novamente")
-            alterRout()
-    }
-
-}
-
-
-let app = Application()
-var nic = User(name: "Nicolas", subject: [])
+var nic = User(name: "Nicolas", subject: [], busy: [], rest: [])
                
 
 //Poder adicionar (var) ou retirar matérias, tópicos
-
 func alterSubjects(_ nic: inout User){
     
-    app.printRoutine(&nic)
-    
     while true {
-    print("\n\n1. Adicionar matérias\n2. Remover matérias\n3. Editar matérias\n4. Alterar minha rotina\n")
+        
+    printRoutine(&nic)
+    
+    print("\n\n1. Adicionar matérias\n2. Remover matérias\n3. Adicionar horários ocupados\n4. Adicionar horários livres")
     
     let newSubject = readLine()
    
         switch newSubject{
 
-    // Yes
+    // Add subjects
         case "1":
 
             var aux: Subject
@@ -142,7 +120,6 @@ func alterSubjects(_ nic: inout User){
             let importanceAux = Int(readLine()!)
             
            
-//            nic = User(name: "Nicolas", subject: [music, programing])
             aux = Subject(name: nameAux, topic: topicAux, importance: importanceAux!)
             
             //Limite
@@ -153,11 +130,10 @@ func alterSubjects(_ nic: inout User){
             }
             
             nic.subject!.append(aux)
-            app.printRoutine(&nic)
         
             break
         
-    // No
+    // Remove subjects
         case "2":
             
             print("digite a materia que quer remover: ")
@@ -168,24 +144,57 @@ func alterSubjects(_ nic: inout User){
                 return
             }
             nic.subject = info
-            app.printRoutine(&nic)
         
             break
-         
+  
+    //Alter routine
         case "3":
             
-            print("\nQue matéria você gostaria de alterar?")
-            app.printRoutine(&nic)
+            //alterRout()
+            var unaux: Hours
+                
+                print("Quando essa atividade começa?")
+                let initialUnhour = Double(readLine()!)! // Tratar o caso do usuario entrar um texto invalido
             
-            let option = readLine()!
-            print(option)
-            app.printRoutine(&nic)
+                print("Quando essa atividade termina?")
+                let finalUnhour = Double(readLine()!)!
             
+            var activity: Array<Double> = []
+            
+            var currentHour = initialUnhour
+            
+            while currentHour <= finalUnhour {
+                activity.append(currentHour)
+                currentHour += 0.5
+            }
+            
+            unaux = Hours(available: [], unavailable: activity)
+            
+            nic.busy!.append(unaux)
+
             break
-        
+            
         case "4":
             
-            alterRout()
+            var avaux: Hours
+            
+                print("Que horas você estará disponivel?")
+                let initialRest = Double(readLine()!)!
+            
+                print("Até que horas você ficará dispovinel?")
+                let finalRest = Double(readLine()!)!
+            
+            var rest: Array<Double> = []
+            
+            var restHour = initialRest
+            
+            while restHour <= finalRest {
+                rest.append(restHour)
+                restHour += 0.5
+            }
+            
+            avaux = Hours(available: rest, unavailable: [])
+            nic.rest!.append(avaux)
             
             break
             
@@ -195,23 +204,9 @@ func alterSubjects(_ nic: inout User){
             
         default:
             print("Não entendi, por favor tente novamente")
-            app.printRoutine(&nic)
+            printRoutine(&nic)
         }
     }
 }
     alterSubjects(&nic)
 
-
-
-
-
-
-
-
-//Poder adicionar e alterar (var) sua rotina
-
-
-//Sugerir horário de estudo de uma hora (print e random) com 30 minutos de folga entre seu ultimo compromisso e proximo
-
-
-//Persistência de Dados / Banco de Dados / API / readLine() <- print
