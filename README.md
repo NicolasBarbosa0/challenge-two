@@ -1,3 +1,5 @@
+> Status do Projeto: ⚠️ Em Desenvolvimento
+
 # Diced_Routine
 Programa que sugere horários de estudos, ou atividades, baseados em sua rotina.
 
