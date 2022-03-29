@@ -7,7 +7,7 @@ import Foundation
 
 
 //Class "User" stores the list of subjects added by the user
-class User{
+class User {
     let name: String?
     var subject: Array<Subject>?
     var busy: Array<Hours>?
@@ -22,7 +22,7 @@ class User{
 }
 
 // Class "Subject" stores the name of a subject it's topic and importance
-class Subject{
+class Subject {
     var name: String?
     var topic: String?
     var importance: Int
@@ -36,7 +36,7 @@ class Subject{
 
 
 // Class "Hours" stores available and unavailable time of the user
-class Hours{
+class Hours {
     var available: Array<Double>?
     var unavailable: Array<Double>?
     
@@ -80,7 +80,7 @@ func deleteSub(_ array: Array<Subject>,_ subject: String?) -> Array<Subject>? {
     for info in array {
         if info.name == subject! {
             varTemp = array.filter({ object in object.name != subject! }) //Reads the list searching for a match based on the input given by the user
-            
+            // Caso o valor não seja encontrado a função está retornando apenas "erro" e substituindo as outras matérias
             break
         }
     }
@@ -93,7 +93,7 @@ var nic = User(name: "Nicolas", subject: [], busy: [], rest: [])
                
 
 //Poder adicionar (var) ou retirar matérias, tópicos
-func alterSubjects(_ nic: inout User){
+func alterSubjects(_ nic: inout User) {
     
     while true {
         
@@ -103,7 +103,7 @@ func alterSubjects(_ nic: inout User){
     
     let newSubject = readLine()
    
-        switch newSubject{
+        switch newSubject {
 
     // Add subjects
         case "1":
@@ -120,12 +120,12 @@ func alterSubjects(_ nic: inout User){
             let importanceAux = Int(readLine()!)
             
            
-            aux = Subject(name: nameAux, topic: topicAux, importance: importanceAux!)
+            aux = Subject(name: nameAux, topic: topicAux, importance: importanceAux!) //Tratar caso não consiga converter
             
             //Limite
-            if (aux.importance > 10){
+            if (aux.importance > 10) {
                 aux.importance = 10
-            } else if (aux.importance < 0){
+            } else if (aux.importance < 0) {
                 aux.importance = 0
             }
             
@@ -136,7 +136,7 @@ func alterSubjects(_ nic: inout User){
     // Remove subjects
         case "2":
             
-            print("digite a materia que quer remover: ")
+            print("Digite a materia que quer remover: ")
             let option1 = readLine()?.lowercased()
             guard let info = deleteSub(nic.subject!, option1!)
             else {
@@ -156,7 +156,7 @@ func alterSubjects(_ nic: inout User){
                 print("Quando essa atividade começa?")
                 let initialUnhour = Double(readLine()!)! // Tratar o caso do usuario entrar um texto invalido
             
-                print("Quando essa atividade termina?")
+                print("Quando essa atividade termina?") // Tratar o caso do usuario entrar um texto invalido
                 let finalUnhour = Double(readLine()!)!
             
             var activity: Array<Double> = []
@@ -178,10 +178,10 @@ func alterSubjects(_ nic: inout User){
             
             var avaux: Hours
             
-                print("Que horas você estará disponivel?")
+                print("Que horas você estará disponivel?") // Tratar o caso do usuario entrar um texto invalido
                 let initialRest = Double(readLine()!)!
             
-                print("Até que horas você ficará dispovinel?")
+                print("Até que horas você ficará disponivel?") // Tratar o caso do usuario entrar um texto invalido
                 let finalRest = Double(readLine()!)!
             
             var rest: Array<Double> = []
