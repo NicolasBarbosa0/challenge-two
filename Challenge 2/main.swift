@@ -6,70 +6,31 @@
 import Foundation
 
 
-//Class "User" stores the list of subjects added by the user
-class User {
-    let name: String?
-    var subject: Array<Subject>?
-    var busy: Array<Hours>?
-    var rest: Array<Hours>?
-    
-    init(name: String, subject: Array<Subject>, busy: Array<Hours>?, rest: Array<Hours>?){
-        self.name = name
-        self.subject = subject
-        self.busy = busy
-        self.rest = rest
-    }
-}
-
-// Class "Subject" stores the name of a subject it's topic and importance
-class Subject {
-    var name: String?
-    var topic: String?
-    var importance: Int
-    
-    init(name: String?, topic: String?, importance: Int) {
-        self.name = name
-        self.topic = topic
-        self.importance = importance
-    }
-}
-
-
-// Class "Hours" stores available and unavailable time of the user
-class Hours {
-    var available: Array<Double>?
-    var unavailable: Array<Double>?
-    
-    init(available: Array<Double>?, unavailable: Array<Double>?){
-        self.available = available
-        self.unavailable = unavailable
-    }
-}
-
-
 //Prints the subjects, topics and importance
-    func printRoutine(_ user: inout User) {
-        print("\n\n------------------------------------")
-        print("Horários:")
-        
-        for hours in user.busy! {
-            print("\nOcupado: \(hours.unavailable ?? [00])")
-        }
+func printRoutine(_ user: inout User) {
     
-        for free in user.rest! {
-            print("Disponivel: \(free.available ?? [00])\n")
-        }
+    print("\n\n------------------------------------")
+    print("Horários:")
         
-        print("------------------------------------")
-        
-        print("Matérias:")
-        
-        for object in user.subject! {
-            print("\n\(object.name ?? "Sem informação") : \(object.topic ?? "Sem informação") : \(object.importance )")
-        }
-        
-        print("------------------------------------")
+    for hours in user.busy! {
+        print("\nOcupado: \(hours.unavailable ?? [00])")
     }
+    
+    for free in user.rest! {
+        print("Disponivel: \(free.available ?? [00])\n")
+    }
+        
+    print("------------------------------------")
+        
+    print("Matérias:")
+        
+    for object in user.subject! {
+        print("\n\(object.name ?? "Sem informação") : \(object.topic ?? "Sem informação") : \(object.importance )")
+    }
+        
+    print("------------------------------------")
+    
+}
 
 
 
@@ -109,10 +70,10 @@ func alterSubjects(_ nic: inout User) {
         case "1":
 
             var aux: Subject
-            print("\nAdicione a matéria:")
+            print("\nAdicione a matéria (Ex: matematica): ")
             let nameAux = readLine()?.lowercased()
             
-            print("\nAdicione o tópico:")
+            print("\nAdicione o tópico (Ex: trigonometria):")
             let topicAux = readLine()?.lowercased()
             
             print("\nQual a importância dessa matéria (0 à 10):")
@@ -153,10 +114,10 @@ func alterSubjects(_ nic: inout User) {
             //alterRout()
             var unaux: Hours
                 
-                print("Quando essa atividade começa?")
+                print("Que horas essa atividade começa? (Ex: 13.5)")
                 let initialUnhour = Double(readLine()!)! // Tratar o caso do usuario entrar um texto invalido
             
-                print("Quando essa atividade termina?") // Tratar o caso do usuario entrar um texto invalido
+                print("Que horas essa atividade termina? (Ex:17)") // Tratar o caso do usuario entrar um texto invalido
                 let finalUnhour = Double(readLine()!)!
             
             var activity: Array<Double> = []
